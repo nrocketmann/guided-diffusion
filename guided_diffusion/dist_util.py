@@ -10,6 +10,7 @@ import blobfile as bf
 from mpi4py import MPI
 import torch as th
 import torch.distributed as dist
+import torch_xla.core.xla_model as xm
 
 # Change this to reflect your cluster layout.
 # The GPU for a given rank is (rank % GPUS_PER_NODE).
@@ -46,9 +47,11 @@ def dev():
     """
     Get the device to use for torch.distributed.
     """
-    if th.cuda.is_available():
-        return th.device(f"cuda")
-    return th.device("cpu")
+    # if th.cuda.is_available():
+    #     return th.device(f"cuda")
+    # return th.device("cpu")
+
+    return xm.xla_device()
 
 
 def load_state_dict(path, **kwargs):
